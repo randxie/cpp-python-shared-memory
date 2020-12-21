@@ -1,6 +1,6 @@
 # cpp-python-shared-memory
 
-This example demonstrates how to use shared memory across C++ and Python. The main idea is the build a Python extention that wraps boost::interprocess. The rest are the same as using C++ shared memory.
+This example demonstrates how to use shared memory across C++ and Python. The main idea is to build a Python extention that wraps boost::interprocess. The rest are the same as using C++ shared memory.
 
 ## Installation
 
