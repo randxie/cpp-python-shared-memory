@@ -16,7 +16,7 @@
 namespace shared_memory {
 namespace {
 using boost::interprocess::message_queue;
-using boost::interprocess::open_only;
+using boost::interprocess::open_or_create;
 
 const static int kNumpyInitialized = _import_array();
 const char kSharedMemoryName[] = "SharedMemory";
@@ -38,9 +38,10 @@ PyObject *GetNext(PyObject *msg_queue_obj) {
   SharedMsgQueue *msg_queue =
       (SharedMsgQueue *)PyCapsule_GetPointer(msg_queue_obj, kSharedMemoryName);
 
+  // Assume the message queue always sends double.
+  double num;
   unsigned int priority;
   message_queue::size_type recvd_size;
-  double num;
   msg_queue->mq_->receive(&num, sizeof(num), recvd_size, priority);
 
   return PyFloat_FromDouble(num);

@@ -1,20 +1,27 @@
 # cpp-python-shared-memory
 
-## VSCode setup
+This example demonstrates how to use shared memory across C++ and Python. The main idea is the build a Python extention that wraps boost::interprocess. The rest are the same as using C++ shared memory.
 
+## Installation
+
+Build Python extension
 ```
-  "C_Cpp.default.includePath": [
-    "${workspaceFolder}/include",
-    "~/anaconda3/envs/vision/include/python3.6m",
-    "~/anaconda3/envs/vision/lib/python3.6/site-packages/numpy/core/include"
-  ],
-  "python.condaPath": "~/anaconda3/condabin/conda",
-  "python.pythonPath": "~/anaconda3/envs/vision/bin/python",
-  "python.analysis.extraPaths": [
-    "~/anaconda3/envs/vision/lib/python3.7/site-packages"
-  ],
+python setup.py build_ext --inplace
 ```
 
+Build producer binary
 ```
-g++ -o producer_main producer_main.cc -lboost_system -lpthread
+g++ -o producer_main producer_main.cc -lboost_system -lpthread -lrt
+```
+
+## Run the code 
+
+In a terminal
+```
+python test_shared_memory.py
+```
+
+In another terminal
+```
+./producer_main
 ```

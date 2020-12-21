@@ -23,8 +23,6 @@ static PyObject *create_shared_msg_queue(PyObject *self, PyObject *args) {
 
 static PyObject *get_next(PyObject *self, PyObject *args) {
   PyObject *msg_queue = nullptr;
-
-  // The input contains two objects.
   if (not PyArg_ParseTuple(args, "O", &msg_queue)) {
     PyErr_SetString(PyExc_TypeError, "input arguments are not pyobject");
   }
@@ -33,11 +31,16 @@ static PyObject *get_next(PyObject *self, PyObject *args) {
 }
 
 static PyMethodDef shmem_methods[] = {
-    {"create_shared_msg_queue" /*method name*/,
-     create_shared_msg_queue /*function pointer*/,
-     METH_VARARGS /*variable argument functions*/},
-    {"get_next" /*method name*/, get_next /*function pointer*/,
-     METH_VARARGS /*variable argument functions*/},
+    {
+        "create_shared_msg_queue" /*method name*/,
+        create_shared_msg_queue /*function pointer*/,
+        METH_VARARGS /*variable argument functions*/
+    },
+    {
+        "get_next" /*method name*/, 
+        get_next /*function pointer*/,
+        METH_VARARGS /*variable argument functions*/
+    },
     {NULL, NULL, 0, NULL} /* ending indicator */
 
 };

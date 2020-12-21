@@ -5,19 +5,26 @@
 #include <thread>
 #include <vector>
 
+namespace {
+
 using namespace boost::interprocess;
+const char kMsgQueueName[] = "CppPyMessageQueue";
+
+} // namespace
 
 int main() {
-  message_queue::remove("message_queue");
+  message_queue::remove(kMsgQueueName);
   // Create a message_queue.
-  message_queue mq(create_only, "message_queue", 100,
-                   sizeof(double)); // max message size
+  message_queue mq(open_or_create, kMsgQueueName, 100, sizeof(double));
+
+  // Sends an increasing double number.
   double num = 0.0;
   while (true) {
     std::cout << "Sending...." << std::endl;
 
     mq.send(&num, sizeof(num), 0);
     num += 1;
+
     // sleep 2 seconds
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
   }
