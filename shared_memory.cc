@@ -42,9 +42,13 @@ PyObject *GetNext(PyObject *msg_queue_obj) {
   double num;
   unsigned int priority;
   message_queue::size_type recvd_size;
-  msg_queue->mq_->receive(&num, sizeof(num), recvd_size, priority);
+  bool has_data = msg_queue->mq_->try_receive(&num, sizeof(num), recvd_size, priority);
 
-  return PyFloat_FromDouble(num);
+  if (has_data) {
+    return PyFloat_FromDouble(num);
+  } else {
+    return Py_BuildValue("");
+  }
 };
 
 } // namespace shared_memory

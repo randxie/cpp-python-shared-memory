@@ -13,6 +13,8 @@ const char kMsgQueueName[] = "CppPyMessageQueue";
 } // namespace
 
 int main() {
+  // To reuse the previously created queue. You can comment out the remove line.
+  
   message_queue::remove(kMsgQueueName);
   // Create a message_queue.
   message_queue mq(open_or_create, kMsgQueueName, 100, sizeof(double));
