@@ -9,12 +9,14 @@ namespace shared_memory {
 using boost::interprocess::message_queue;
 using boost::interprocess::open_or_create;
 
-const char kMsgQueueName[] = "CppPyMessageQueue";
+constexpr char kMsgQueueName[] = "CppPyMessageQueue";
+constexpr int SPECTRUM_FEATURE_DIM = 10;
 
 struct SharedMsgQueue {
   message_queue *mq_;
   SharedMsgQueue() {
-    mq_ = new message_queue(open_or_create, kMsgQueueName, 100, 100);
+    mq_ = new message_queue(open_or_create, kMsgQueueName, 100,
+                            SPECTRUM_FEATURE_DIM * sizeof(double));
   }
 
   ~SharedMsgQueue() {}

@@ -12,5 +12,6 @@ print(obj)
 while True:
     data = get_next(obj)
     if data is not None:
+        print(type(data))
         print(data)
     time.sleep(0.1)
