@@ -38,20 +38,21 @@ PyObject *GetNext(PyObject *msg_queue_obj) {
   SharedMsgQueue *msg_queue =
       (SharedMsgQueue *)PyCapsule_GetPointer(msg_queue_obj, kSharedMemoryName);
 
-  // Assume the message queue always sends double.
-  double *recv_data = new double[SPECTRUM_FEATURE_DIM];
+  // Create numpy array for receiving data.
+  npy_intp dims[] = {SPECTRUM_FEATURE_DIM};
+  auto recv_data_np = PyArray_ZEROS(1, dims, PyArray_DOUBLE, 0);
 
+  // Get data from message queue
   unsigned int priority;
   message_queue::size_type recvd_size;
   bool has_data = msg_queue->mq_->try_receive(
-      recv_data, SPECTRUM_FEATURE_DIM * sizeof(double), recvd_size, priority);
+      PyArray_DATA((PyArrayObject *)recv_data_np),
+      SPECTRUM_FEATURE_DIM * sizeof(double), recvd_size, priority);
 
-  npy_intp dims[] = {SPECTRUM_FEATURE_DIM};
   if (has_data) {
-    return PyArray_SimpleNewFromData(1, dims, PyArray_DOUBLE,
-                                     (void *)recv_data);
+    return recv_data_np;
   } else {
-    delete recv_data;
+    // Note: do not need to call PyArray_free. PyObject will be gc-ed.
     return Py_BuildValue("");
   }
 };
